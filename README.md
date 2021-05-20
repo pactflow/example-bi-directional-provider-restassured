@@ -1,4 +1,4 @@
-# Example Java Spring Boot + RestAssured Provider
+# Example RestAssured Provider
 
 [![Build Status](https://travis-ci.com/pactflow/example-provider-restassured.svg?branch=master)](https://travis-ci.com/pactflow/example-provider-restassured)
 
