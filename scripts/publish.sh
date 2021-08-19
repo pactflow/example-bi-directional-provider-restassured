@@ -4,7 +4,7 @@ SUCCESS=true
 if [ "${1}" != "true" ]; then
   SUCCESS=false
 fi
-OAS=$(cat oas/swagger.yml | base64)
+OAS=$(cat oas/swagger.yml | base64 -w 0)
 REPORT=$(echo 'tested via RestAssured' | base64)
 
 echo "==> Uploading OAS to Pactflow"
