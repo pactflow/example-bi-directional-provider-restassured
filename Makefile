@@ -72,7 +72,7 @@ test:
 ## Deploy tasks
 ## =====================
 
-deploy: can_i_deploy deploy_app tag_as_prod
+deploy: can_i_deploy deploy_app
 
 no_deploy:
 	@echo "Not deploying as not on master branch"
@@ -85,20 +85,13 @@ can_i_deploy:
 	  broker can-i-deploy \
 	  --pacticipant ${PACTICIPANT} \
 	  --version ${TRAVIS_COMMIT} \
-	  --to prod
+	  --to-environment production
 
-deploy_app:
+deploy_app: record_deployment
 	@echo "Deploying to prod"
 
-tag_as_prod:
-	@docker run --rm \
-	 -e PACT_BROKER_BASE_URL \
-	 -e PACT_BROKER_TOKEN \
-	  pactfoundation/pact-cli:latest \
-	  broker create-version-tag \
-	  --pacticipant ${PACTICIPANT} \
-	  --version ${TRAVIS_COMMIT} \
-	  --tag prod
+record_deployment:
+	@"${PACT_CLI}" broker record_deployment --pacticipant ${PACTICIPANT} --version ${TRAVIS_COMMIT} --environment production
 
 ## =====================
 ## Pactflow set up tasks
