@@ -20,6 +20,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'zulu' 
+          java-version: '11'
       - name: Test
         run: GIT_BRANCH=${GITHUB_REF:11} make ci
 
