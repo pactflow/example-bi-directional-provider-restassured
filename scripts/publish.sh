@@ -4,7 +4,17 @@ SUCCESS=true
 if [ "${1}" != "true" ]; then
   SUCCESS=false
 fi
-OAS=$(cat oas/swagger.yml | base64)
+
+# Avoid breaking for users who don't have GNU base64 command
+# https://github.com/pactflow/example-provider-restassured/pull/1
+# keep base64 encoded content in one line 
+if ! command -v base64 -w 0 &> /dev/null
+then
+    OAS=$(cat oas/swagger.yml | base64)
+else
+    OAS=$(cat oas/swagger.yml | base64 -w 0)
+fi
+
 REPORT=$(echo 'tested via RestAssured' | base64)
 
 echo "==> Uploading OAS to Pactflow"
