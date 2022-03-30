@@ -1,7 +1,8 @@
-PACTICIPANT := "collaborative-contracts-provider"
-GITHUB_REPO := "pactflow/collaborative-contracts-provider"
+PACTICIPANT := "pactflow-example-provider-restassured"
+GITHUB_REPO := "pactflow/example-provider-restassured"
 PACT_CHANGED_WEBHOOK_UUID := "c76b601e-d66a-4eb1-88a4-6ebc50c0df8b"
 PACT_CLI="docker run --rm -v ${PWD}:${PWD} -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli:latest"
+
 
 # Only deploy from master
 ifeq ($(GIT_BRANCH),master)
@@ -32,26 +33,26 @@ tag_as_dev:
 		--auto-create-version \
 	  --tag master
 
-publish_contract: .env tag_as_dev
+publish_contract: tag_as_dev
 	@echo "\n========== STAGE: publish contract + results (success) ==========\n"
-	npm run test:publish -- true
+	PACTICIPANT=${PACTICIPANT} ./scripts/publish.sh true
 
-publish_failure: .env tag_as_dev
+publish_failure: tag_as_dev
 	@echo "\n========== STAGE: publish contract + results (failure) ==========\n"
-	npm run test:publish -- false
+	PACTICIPANT=${PACTICIPANT} ./scripts/publish.sh false
 
 # Run the ci target from a developer machine with the environment variables
-# set as if it was on Github Actions.
+# set as if it was on Travis CI.
 # Use this for quick feedback when playing around with your workflows.
-fake_ci: .env
-	@CI=true \
+fake_ci:
+	CI=true \
 	GIT_COMMIT=`git rev-parse --short HEAD`+`date +%s` \
 	GIT_BRANCH=`git rev-parse --abbrev-ref HEAD` \
 	PACT_BROKER_PUBLISH_VERIFICATION_RESULTS=true \
 	make ci
 
-ci_webhook: .env
-	npm run test:pact
+ci_webhook:
+	./gradlew clean test -i
 
 fake_ci_webhook:
 	CI=true \
@@ -64,32 +65,33 @@ fake_ci_webhook:
 ## Build/test tasks
 ## =====================
 
-test: .env
-	@echo "\n========== STAGE: test ✅ ==========\n"
-	npm run test
+test:
+	./gradlew clean test -i
 
 ## =====================
 ## Deploy tasks
 ## =====================
 
-deploy: deploy_app tag_as_prod
+deploy: can_i_deploy deploy_app
 
 no_deploy:
 	@echo "Not deploying as not on master branch"
 
-can_i_deploy: .env
-	@echo "\n========== STAGE: can-i-deploy? 🌉 ==========\n"
-	@"${PACT_CLI}" broker can-i-deploy --pacticipant ${PACTICIPANT} --version ${GIT_COMMIT} --to prod
-
-deploy_app:
-	@echo "\n========== STAGE: deploy 🚀 ==========\n"
-	@echo "Deploying to prod"
-
-tag_as_prod:
-	@"${PACT_CLI}" broker create-version-tag \
+can_i_deploy:
+	@docker run --rm \
+	 -e PACT_BROKER_BASE_URL \
+	 -e PACT_BROKER_TOKEN \
+	  pactfoundation/pact-cli:latest \
+	  broker can-i-deploy \
 	  --pacticipant ${PACTICIPANT} \
 	  --version ${GIT_COMMIT} \
-	  --tag prod
+	  --to-environment production
+
+deploy_app: record_deployment
+	@echo "Deploying to prod"
+
+record_deployment:
+	@"${PACT_CLI}" broker record_deployment --pacticipant ${PACTICIPANT} --version ${GIT_COMMIT} --environment production
 
 ## =====================
 ## Pactflow set up tasks
@@ -119,10 +121,3 @@ create_or_update_pact_changed_webhook:
 
 test_pact_changed_webhook:
 	@curl -v -X POST ${PACT_BROKER_BASE_URL}/webhooks/${PACT_CHANGED_WEBHOOK_UUID}/execute -H "Authorization: Bearer ${PACT_BROKER_TOKEN}"
-
-## ======================
-## Misc
-## ======================
-
-.env:
-	touch .env
