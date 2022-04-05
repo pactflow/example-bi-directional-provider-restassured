@@ -1,10 +1,10 @@
 # Example RestAssured Provider
 
-[![Build Status](https://github.com/pactflow/example-provider-restassured/actions/workflows/build.yml/badge.svg)](https://github.com/pactflow/example-provider-restassured/actions)
+[![Build Status](https://github.com/pactflow/example-bi-directional-provider-restassured/actions/workflows/build.yml/badge.svg)](https://github.com/pactflow/example-bi-directional-provider-restassured/actions)
 
-[![Can I deploy Status](https://testdemo.pactflow.io/pacticipants/pactflow-example-provider-restassured/branches/master/latest-version/can-i-deploy/to-environment/production/badge)](https://testdemo.pactflow.io/pacticipants/pactflow-example-provider-restassured/branches/master/latest-version/can-i-deploy/to-environment/production/badge)
+[![Can I deploy Status](https://testdemo.pactflow.io/pacticipants/pactflow-example-bi-directional-provider-restassured/branches/master/latest-version/can-i-deploy/to-environment/production/badge)](https://testdemo.pactflow.io/pacticipants/pactflow-example-bi-directional-provider-restassured/branches/master/latest-version/can-i-deploy/to-environment/production/badge)
 
-[![pactflow-example-provider-restassured/pactflow-example-consumer](https://testdemo.pactflow.io/pacts/provider/pactflow-example-provider-restassured/consumer/pactflow-example-consumer/latest/master/badge.svg)](https://testdemo.pactflow.io/pacts/provider/pactflow-example-provider-restassured/consumer/pactflow-example-consumer/latest/master)
+[![pactflow-example-bi-directional-provider-restassured/pactflow-example-consumer](https://testdemo.pactflow.io/pacts/provider/pactflow-example-bi-directional-provider-restassured/consumer/pactflow-example-consumer/latest/master/badge.svg)](https://testdemo.pactflow.io/pacts/provider/pactflow-example-bi-directional-provider-restassured/consumer/pactflow-example-consumer/latest/master)
 
 This is an example of a Spring boot API provider that uses RestAssured, [Pactflow](https://pactflow.io) and its [bi-directional contracts feature](https://pactflow.io/blog/bi-directional-contracts/) to ensure that it is compatible with the expectations its consumers have of it.
 
