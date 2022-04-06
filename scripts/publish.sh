@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 
 SUCCESS=true
 if [ "${1}" != "true" ]; then
@@ -8,11 +8,12 @@ fi
 # Avoid breaking for users who don't have GNU base64 command
 # https://github.com/pactflow/example-bi-directional-provider-restassured/pull/1
 # keep base64 encoded content in one line 
-if ! command -v base64 -w 0 &> /dev/null
-then
-    OAS=$(cat oas/swagger.yml | base64)
-else
+if base64 -w 0; then
+    echo "encoding with base64 -w 0"
     OAS=$(cat oas/swagger.yml | base64 -w 0)
+else
+    echo "encoding with base64"
+    OAS=$(cat oas/swagger.yml | base64)
 fi
 
 REPORT=$(echo 'tested via RestAssured' | base64)

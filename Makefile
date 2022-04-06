@@ -41,12 +41,14 @@ publish_failure: create_branch_version create_version_tag
 # set as if it was on GitHub Actions
 # Use this for quick feedback when playing around with your workflows.
 fake_ci:
-	CI=true \
-	GIT_COMMIT=`git rev-parse --short HEAD`+`date +%s` \
+	GIT_COMMIT=`git rev-parse --short HEAD` \
 	GIT_BRANCH=`git rev-parse --abbrev-ref HEAD` \
-	PACT_BROKER_PUBLISH_VERIFICATION_RESULTS=true \
-	make ci;
-	make can_i_deploy $(DEPLOY_TARGET)
+	make ci; 
+	GIT_COMMIT=`git rev-parse --short HEAD` \
+	GIT_BRANCH=`git rev-parse --abbrev-ref HEAD` \
+	make deploy_target
+
+deploy_target: can_i_deploy $(DEPLOY_TARGET)
 
 ## =====================
 ## Build/test tasks
@@ -83,3 +85,7 @@ record_deployment:
 ## =====================
 ## Pactflow set up tasks
 ## =====================
+
+## ======================
+## Misc
+## ======================
