@@ -26,18 +26,17 @@ ci:
 
 publish_and_deploy: publish_contract can_i_deploy $(DEPLOY_TARGET)
 
-tag:
-	@"${PACT_CLI}" broker create-version-tag \
-	  --pacticipant ${PACTICIPANT} \
-	  --version ${GIT_COMMIT} \
-		--auto-create-version \
-	  --tag ${GIT_BRANCH}
+create_branch_version:
+	PACTICIPANT=${PACTICIPANT} ./scripts/create_branch_version.sh
 
-publish_contract: tag
+create_version_tag:
+	PACTICIPANT=${PACTICIPANT} ./scripts/create_version_tag.sh
+
+publish_contract: create_branch_version create_version_tag
 	@echo "\n========== STAGE: publish contract + results (success) ==========\n"
 	PACTICIPANT=${PACTICIPANT} ./scripts/publish.sh true
 
-publish_failure: tag
+publish_failure: create_branch_version create_version_tag
 	@echo "\n========== STAGE: publish contract + results (failure) ==========\n"
 	PACTICIPANT=${PACTICIPANT} ./scripts/publish.sh false
 
