@@ -10,9 +10,9 @@ fi
 # keep base64 encoded content in one line 
 if ! command -v base64 -w 0 &> /dev/null
 then
-    OAS=$(cat oas/swagger.yml | base64)
-else
     OAS=$(cat oas/swagger.yml | base64 -w 0)
+else
+    OAS=$(cat oas/swagger.yml | base64)
 fi
 
 REPORT=$(echo 'tested via RestAssured' | base64)
