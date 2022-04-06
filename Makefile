@@ -41,10 +41,10 @@ publish_failure: create_branch_version create_version_tag
 # set as if it was on GitHub Actions
 # Use this for quick feedback when playing around with your workflows.
 fake_ci:
-	GIT_COMMIT=`git rev-parse --short HEAD`+`date +%s` \
+	GIT_COMMIT=`git rev-parse --short HEAD` \
 	GIT_BRANCH=`git rev-parse --abbrev-ref HEAD` \
 	make ci; 
-	GIT_COMMIT=`git rev-parse --short HEAD`+`date +%s` \
+	GIT_COMMIT=`git rev-parse --short HEAD` \
 	GIT_BRANCH=`git rev-parse --abbrev-ref HEAD` \
 	make deploy_target
 
