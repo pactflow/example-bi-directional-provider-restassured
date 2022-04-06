@@ -8,7 +8,7 @@ fi
 # Avoid breaking for users who don't have GNU base64 command
 # https://github.com/pactflow/example-bi-directional-provider-restassured/pull/1
 # keep base64 encoded content in one line 
-if ! [ command -v base64 -w 0 &> /dev/null ]
+if ! command -v base64 -w 0 &> /dev/null
 then
     echo "encoding with base64"
     OAS=$(cat oas/swagger.yml | base64)
