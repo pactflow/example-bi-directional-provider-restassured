@@ -18,12 +18,10 @@ all: test
 
 ci:
 	@if make test; then \
-		make publish_and_deploy; \
+		make publish_contract; \
 	else \
 		make publish_failure; \
-	fi; \
-
-publish_and_deploy: publish_contract can_i_deploy $(DEPLOY_TARGET)
+	fi;
 
 create_branch_version:
 	PACTICIPANT=${PACTICIPANT} ./scripts/create_branch_version.sh
@@ -47,7 +45,8 @@ fake_ci:
 	GIT_COMMIT=`git rev-parse --short HEAD`+`date +%s` \
 	GIT_BRANCH=`git rev-parse --abbrev-ref HEAD` \
 	PACT_BROKER_PUBLISH_VERIFICATION_RESULTS=true \
-	make ci
+	make ci;
+	make can_i_deploy $(DEPLOY_TARGET)
 
 ## =====================
 ## Build/test tasks
