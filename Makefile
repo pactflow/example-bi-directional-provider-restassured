@@ -82,7 +82,9 @@ can_i_deploy:
 	@${PACT_BROKER_CLI_COMMAND} can-i-deploy \
 	  --pacticipant ${PACTICIPANT} \
 	  --version ${VERSION} \
-	  --to-environment production
+	  --to-environment production \
+	  --retry-while-unknown 0 \
+	  --retry-interval 10
 
 deploy_app: record_deployment
 	@echo "Deploying to prod"
