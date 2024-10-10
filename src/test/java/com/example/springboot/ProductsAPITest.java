@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.atlassian.oai.validator.OpenApiInteractionValidator;
@@ -38,6 +38,7 @@ class ProductsAPITest {
       .build();
 
   // Use this for "negative scenario" testing
+  // ref: https://bitbucket.org/atlassian/swagger-request-validator/issues/332/restassured-skip-request-validation-with
   private OpenApiValidationFilter responseOnlyValidation = new OpenApiValidationFilter(responseOnlyValidator);
 
   @Test
@@ -66,11 +67,11 @@ class ProductsAPITest {
 
   @Test
   public void testGetProduct404() {
-    given().port(port).filter(validationFilter).when().get("/product/999").then().assertThat().statusCode(404);
+    given().port(port).filter(responseOnlyValidation).when().get("/product/999").then().assertThat().statusCode(404);
   }
 
   @Test
   public void testGetProduct400() {
-    given().port(port).filter(validationFilter).when().get("/product/notanumber").then().assertThat().statusCode(400);
+    given().port(port).filter(responseOnlyValidation).when().get("/product/notanumber").then().assertThat().statusCode(400);
   }
 }
