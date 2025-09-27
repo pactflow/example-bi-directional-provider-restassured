@@ -25,7 +25,7 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
   compileOnly 'org.projectlombok:lombok'
   annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'com.atlassian.oai:swagger-request-validator-restassured:2.45.1'
+	testImplementation 'com.atlassian.oai:swagger-request-validator-restassured:2.46.0'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
